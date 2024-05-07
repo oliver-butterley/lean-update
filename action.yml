@@ -19,7 +19,8 @@ inputs:
   token: 
     description: |
       A Github token to be used for committing
-    required: false
+    required: true
+    default: ${{ github.token }}
 outputs:
   result:
     description: "The action outputs `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios."
@@ -90,6 +91,7 @@ runs:
           --label "$LABELS" \
           --body "$BODY"
       env:
+        # Could be best to use the default token here
         GH_TOKEN: ${{ inputs.token }}
         GH_REPO: ${{ github.repository }}
         TITLE: Updates available and have been tested to build correctly

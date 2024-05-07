@@ -32,7 +32,7 @@ jobs:
           on_update_fails: issue
 ```
 
-The relevant permissions are only required if the corresponding options are selected. If the action is set to open pull requests then this must also be activated in the settings of the repo.
+The relevant permissions are only required if the corresponding options are selected. If the action is set to open pull requests one must explicitly allow GitHub Actions to create pull requests. This setting can be found in a repository's settings under Actions > General > Workflow permissions.
 
 ## Details and custom configuration
 
