@@ -60,13 +60,13 @@ runs:
     - name: Record outcome
       id: record-outcome
       run: |
-        if [ ${{steps.check-update.outputs.files_changed == 'false'}} ]; then
+        if "${{steps.check-update.outputs.files_changed == 'false'}}" ; then
           echo "No update available"
           echo "outcome=no-update" >> "$GITHUB_OUTPUT"
-        elif [ ${{steps.build-lean.outcome == 'success'}} ]; then
+        elif "${{steps.build-lean.outcome == 'success'}}"; then
           echo "Update available and build successful"
           echo "outcome=update-success" >> "$GITHUB_OUTPUT";
-        elif [ ${{steps.build-lean.outcome == 'failure'}} ]; then
+        elif "${{steps.build-lean.outcome == 'failure'}}"; then
           echo "Update available but build fails"
           echo "outcome=update-fail" >> "$GITHUB_OUTPUT"
         fi
