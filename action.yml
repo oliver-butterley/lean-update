@@ -90,6 +90,7 @@ runs:
         TITLE: Updates available and have been tested to build correctly
         BODY: |
           Some more useful info could be added here...
+      shell: bash
 
     - name: Commit update if the updated lean build was successful
       if: steps.build-lean.outcome == 'success' && inputs.on_update_succeeds == 'commit'
@@ -112,6 +113,7 @@ runs:
         BODY: |
           Try `lake update` and then investigate why this update causes the lean build to fail.
           Files changed in update: ${{ steps.check-update.outputs.changed_files }}
+      shell: bash
 
     - name: Action fails if the updated lean build fails
       if: steps.build-lean.outcome == 'failure' && inputs.on_update_fails == 'fail'
