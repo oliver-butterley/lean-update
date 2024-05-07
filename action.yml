@@ -69,6 +69,7 @@ runs:
         elif [ ${{steps.build-lean.outcome == 'failure'}} ]; then
           echo "Update available but build fails"
           echo "outcome=update-fail" >> "$GITHUB_OUTPUT"
+        fi
       shell: bash
 
     - name: Open PR if the updated lean build was successful
