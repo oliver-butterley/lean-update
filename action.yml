@@ -16,6 +16,10 @@ inputs:
       Default: "issue".
     required: true
     default: "issue"
+  token: 
+    description: |
+      A Github token to be used for committing
+    required: false
 outputs:
   result:
     description: "The action outputs `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios."
@@ -85,7 +89,7 @@ runs:
           --label "$LABELS" \
           --body "$BODY"
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ inputs.token }}
         GH_REPO: ${{ github.repository }}
         TITLE: Updates available and have been tested to build correctly
         BODY: |
@@ -106,7 +110,7 @@ runs:
           --label "$LABELS" \
           --body "$BODY"
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ inputs.token }}
         GH_REPO: ${{ github.repository }}
         TITLE: Updates available but manual intervention required
         # LABELS: bug
