@@ -24,7 +24,7 @@ jobs:
       contents: write       # required to commit to the repo
     steps:
       - name: Update Lean project
-        uses:  oliver-butterley/lean-update-action@v1-beta
+        uses:  oliver-butterley/lean-update-action@v1-alpha
         with:
           #  Allowed values: "silent", "commit", "issue" or "pr". Default: "commit".
           on_update_succeeds: commit
@@ -33,6 +33,7 @@ jobs:
 ```
 
 The relevant permissions are only required if the corresponding options are selected. If the action is set to open pull requests one must explicitly allow GitHub Actions to create pull requests. This setting can be found in a repository's settings under Actions > General > Workflow permissions.
+For the action to open an issue, the issue feature must be activated for the repo. This setting can be found in a repository's settings under General > Features.
 
 ## Details and custom configuration
 
@@ -59,7 +60,7 @@ jobs:
     steps:
       - name: Check for update
         id: check
-        uses:  oliver-butterley/lean-update-action@v1-beta
+        uses:  oliver-butterley/lean-update-action@v1-alpha
         with:
           on_update_succeeds: silent
           on_update_fails: silent
