@@ -2,15 +2,7 @@
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/oliver-butterley/lean-update-action?logo=github&sort=semver)](https://github.com/oliver-butterley/lean-update-action/releases)
 
-This github action attempts to update lean and dependencies of a lean project, for example mathlib. If an update is available then the updated version is tested. Options permit automatic committing of the updated project, opening PRs or opening issues.
-
-## Usage
-
-```yml
-      - name: Update Lean project
-        uses:  oliver-butterley/lean-update-action@v1-beta
-```
-See below for full customization options. Depending on chosen options, some additional permissions are required.
+This github action attempts to update lean and dependencies of a lean project, e.g., mathlib. If an update is available then the updated version is tested. Options permit automatic committing of the updated project, opening PRs or opening issues.
 
 ## Quick setup
 
@@ -29,11 +21,18 @@ jobs:
     permissions:
       issues: write         # required to create issues
       pull-requests: write  # required to create pull requests
-      contents: write       # required to commit updates to the repo
+      contents: write       # required to commit to the repo
     steps:
       - name: Update Lean project
         uses:  oliver-butterley/lean-update-action@v1-beta
+        with:
+          #  Allowed values: "silent", "commit", "issue" or "pr". Default: "commit".
+          on_update_succeeds: commit
+          # Allowed values: "silent", "issue" or "fail". Default: "issue".
+          on_update_fails: issue
 ```
+
+The relevant permissions are only required if the corresponding options are selected. If the action is set to open pull requests then this must also be activated in the settings of the repo.
 
 ## Details and custom configuration
 
@@ -43,29 +42,40 @@ The action starts by attempting `lake update`. Assuming this is successful then 
 - Update available and build successful
 - Update available and build fails
 
-By default the action is silent in the first case, commits the updated project in the second case and opens an issue in the third case. 
+The action is silent in the first case and, by default, commits the updated project in the second case and opens an issue in the third case. 
 
-```yml
-- uses: oliver-butterley/lean-update-action@v1-beta
-  with:
-    #  What to do when an update is available and the build is successful.
-    #  Allowed values: "silent", "commit", "issue" or "pr". Default: "commit".
-    on_update_succeeds: commit
-    # What to do when an update is available and the build fails.
-    # Allowed values: "silent", "issue" or "pr". Default: "issue".
-    on_update_fails: issue
-```
+- In order to control what to do when an update is available and the build is successful set `on_update_succeeds` to be equal to `silent`, `commit`, `issue` or `pr`. 
+
+- In order to control what to do when an update is available and the build fails set `on_update_fails` to be equal to `silent`, `issue` or `fail`.
 
 ## Outputs
 
-The action outputs `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios.
+The action outputs the `outcome` with the value of `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios. Consequently this action can be used to check for available updates and then trigger different tasks.
+
+```yml
+jobs:
+  check_update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for update
+        id: check
+        uses:  oliver-butterley/lean-update-action@v1-beta
+        with:
+          on_update_succeeds: silent
+          on_update_fails: silent
+      - name: When update succeeds
+        if: steps.check.outputs.outcome == 'update-succeeds'
+        run: echo An update is available and builds successfully
+      - name: When update fails
+        if: steps.check.outputs.outcome == 'update-fails'
+        run: echo An update is available but builds fails
+```
 
 ### To do
 
 - Add configuration options for `lake update` so that a particular project can choose to only update some of the dependencies if required.
-- Add update details to commit / issue / PR.
+- Add update details to commit / issue / PR. Diff of changed files?
 - Add configuration options for the case when documentation also needs to be built.
-- Add the possibility to cause the action to fail when an update is available but fails to build.
 - Use other lean action to confirm that the build is successful.
 - Add functionality to not open another issue if the previous one is already open.
 
