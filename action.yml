@@ -31,14 +31,38 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Check that project has Mathlib as a dependency
+      # As per https://github.com/leanprover/lean-action
+      id: check-mathlib
+      run: |
+        TOML_PATTERN="\[\[require\]\]\nname = \"mathlib\"\ngit = \"https://github.com/leanprover-community/mathlib4"
+        if grep -q "require mathlib" lakefile.lean || grep -Pzq "$TOML_PATTERN" lakefile.toml; then
+          echo "USES_MATHLIB=true" >> "$GITHUB_OUTPUT";
+        else  
+          echo "USES_MATHLIB=false" >> "$GITHUB_OUTPUT";
+        fi
+      shell: bash
+
+    - name: Give up if not using mathlib
+      if: steps.check-mathlib.outputs.uses_mathlib == 'false'
+      run: |
+        echo "This action required the lean project to have mathlib as a dependency." 
+        exit 1
+      shell: bash
+
+    - name: Update lean-toolchain
+      run: |
+        curl -L https://raw.githubusercontent.com/leanprover-community/mathlib4/master/lean-toolchain -o lean-toolchain
+      shell: bash
+
     - name: Install elan
       run: |
         curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
         echo "$HOME/.elan/bin" >> $GITHUB_PATH
       shell: bash
 
-    - name: Update ${{ github.repository }}
-      run: lake update
+    - name: Update Mathlib dependency of ${{ github.repository }}
+      run: lake update Mathlib
       shell: bash
 
     - name: Check if anything was updated
