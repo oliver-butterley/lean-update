@@ -37,16 +37,18 @@ runs:
       run: |
         TOML_PATTERN="\[\[require\]\]\nname = \"mathlib\"\ngit = \"https://github.com/leanprover-community/mathlib4"
         if grep -q "require mathlib" lakefile.lean || grep -Pzq "$TOML_PATTERN" lakefile.toml; then
-          echo "USES_MATHLIB=true" >> "$GITHUB_OUTPUT";
+          echo "USES_MATHLIB=true" >> "$GITHUB_OUTPUT"
+          echo "Project confirmed to have mathlib as a dependency.";
         else  
-          echo "USES_MATHLIB=false" >> "$GITHUB_OUTPUT";
+          echo "USES_MATHLIB=false" >> "$GITHUB_OUTPUT"
+          echo "Project does not have mathlib as a dependency.";
         fi
       shell: bash
 
     - name: Give up if not using mathlib
       if: steps.check-mathlib.outputs.uses_mathlib == 'false'
       run: |
-        echo "This action required the lean project to have mathlib as a dependency." 
+        echo "This action requires the lean project to have mathlib as a dependency." 
         exit 1
       shell: bash
 
