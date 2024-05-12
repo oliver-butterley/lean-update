@@ -2,6 +2,10 @@
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/oliver-butterley/lean-update-action?logo=github&sort=semver)](https://github.com/oliver-butterley/lean-update-action/releases)
 
+::: info
+For the moment it is unclear the correct
+:::
+
 This github action is for Lean projects which include Mathlib as a dependency. The action attempts to update lean and Mathlib. If an update is available then the updated version is tested. Options permit automatic committing of the updated project, opening PRs or opening issues.
 
 ## Quick setup
@@ -37,7 +41,7 @@ For the action to open an issue, the issue feature must be activated for the rep
 
 ## Details and custom configuration
 
-The action starts by attempting `lake update`. Assuming this is successful then the it attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible outcomes:
+The action starts by checking if the project has mathlib as a dependency and aborts if this isn't the case. It then updates `lean-toolchain` to match the latest version of mathlib. It then attempts `lake update`. Assuming this is successful then the action attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible outcomes:
 
 - No update available
 - Update available and build successful
