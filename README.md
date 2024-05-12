@@ -3,7 +3,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/oliver-butterley/lean-update-action?logo=github&sort=semver)](https://github.com/oliver-butterley/lean-update-action/releases)
 
 ::: info
-For the moment it is unclear the correct
+For the moment it is unclear the correct method for systematically updating a project which depends on mathlib. Consequently the development of this action should be viewed as speculative.
 :::
 
 This github action is for Lean projects which include Mathlib as a dependency. The action attempts to update lean and Mathlib. If an update is available then the updated version is tested. Options permit automatic committing of the updated project, opening PRs or opening issues.
