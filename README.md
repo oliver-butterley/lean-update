@@ -14,7 +14,7 @@ The action is useful when run periodically (using `cron`) and so a typical use w
 name: Update Lean
 on:
   schedule:
-    - cron: "0 11 * * 4"    # every Wednesday at 11:00 UTC
+    - cron: "0 11 * * 4"    # every Thursday at 11:00 UTC
   workflow_dispatch:        # allow manual starts
 
 jobs:
