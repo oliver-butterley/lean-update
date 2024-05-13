@@ -8,7 +8,7 @@ This github action is for Lean projects which include Mathlib as a dependency. T
 
 ## Quick setup
 
-The action is useful when run periodically (using `cron`) and so a typical use would be to add to a github repo containing a Lean project the file `.github/workflows/update.yml` containing something like the following:
+The action is useful when run periodically (using [cron syntax](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07)) and so a typical use would be to add to a github repo containing a Lean project the file `.github/workflows/update.yml` containing something like the following:
 
 ```yml
 name: Update Lean
