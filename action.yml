@@ -30,17 +30,11 @@ runs:
   steps:
 
     - name: Check that project has Mathlib as a dependency
-      # As per https://github.com/leanprover/lean-action
       id: check-mathlib
       run: |
-        TOML_PATTERN="\[\[require\]\]\nname = \"mathlib\"\ngit = \"https://github.com/leanprover-community/mathlib4"
-        if grep -q "require mathlib" lakefile.lean || grep -Pzq "$TOML_PATTERN" lakefile.toml; then
-          echo "uses_mathlib=true" >> "$GITHUB_OUTPUT"
-          echo "Project confirmed to have mathlib as a dependency.";
-        else  
-          echo "uses_mathlib=false" >> "$GITHUB_OUTPUT"
-          echo "Project does not have mathlib as a dependency.";
-        fi
+        OUTCOME=$(bash ${{ github.action_path }}/check-mathlib.sh)
+        echo "$OUTCOME" >> "$GITHUB_OUTPUT"
+        echo "info: $OUTCOME"
       shell: bash
 
     - name: Give up if not using mathlib
