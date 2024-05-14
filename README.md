@@ -25,12 +25,14 @@ jobs:
       pull-requests: write  # required to create pull requests
       contents: write       # required to commit to the repo
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Update Lean project
-        uses:  oliver-butterley/lean-update-action@v1-alpha
+        uses:  oliver-butterley/lean-update-action@v1-alpha.3
         with:
-          #  Allowed values: "silent", "commit", "issue" or "pr". Default: "commit".
+          #  Allowed values: "silent", "commit", "issue" or "pr". Default: "silent".
           on_update_succeeds: commit
-          # Allowed values: "silent", "issue" or "fail". Default: "issue".
+          # Allowed values: "silent", "issue" or "fail". Default: "silent".
           on_update_fails: issue
 ```
 
@@ -45,7 +47,7 @@ The action starts by checking if the project has mathlib as a dependency and abo
 - Update available and build successful
 - Update available and build fails
 
-The action is silent in the first case and, by default, commits the updated project in the second case and opens an issue in the third case. 
+By default the action is silent in all cases but can be configured to commit the updated project, opens an issue, open a pull request. 
 
 - In order to control what to do when an update is available and the build is successful set `on_update_succeeds` to be equal to `silent`, `commit`, `issue` or `pr`. 
 
@@ -60,26 +62,27 @@ jobs:
   check_update:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Check for update
         id: check
-        uses:  oliver-butterley/lean-update-action@v1-alpha
-        with:
-          on_update_succeeds: silent
-          on_update_fails: silent
-      - name: When update succeeds
+        # Action is silent except for setting the outcome to be used in subsequent steps
+        uses:  oliver-butterley/lean-update-action@v1-alpha.3
+
+      - name: When update succeeds do something
         if: steps.check.outputs.outcome == 'update-succeeds'
         run: echo An update is available and builds successfully
-      - name: When update fails
+
+      - name: When update fails do something
         if: steps.check.outputs.outcome == 'update-fails'
         run: echo An update is available but builds fails
 ```
 
 ### To do
 
-- Add configuration options for `lake update` so that a particular project can choose to only update some of the dependencies if required.
-- Add update details to commit / issue / PR. Diff of changed files?
+- Produce detailed feedback on what is happening in a way that can be passed to subsequent steps.
 - Add configuration options for the case when documentation also needs to be built.
-- Use other lean action to confirm that the build is successful.
+- Use `lean-action` to confirm that the build is successful.
 - Add functionality to not open another issue if the previous one is already open.
 
 ## Total customization
