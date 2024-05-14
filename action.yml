@@ -70,9 +70,6 @@ runs:
     - name: Check if lean-toolchain or lake-manifest.json were updated
       id: check-update
       run: |
-        git diff --name-only --ignore-all-space | grep -E 'lean-toolchain|lake-manifest.json'
-        FILENAMES=$(git diff --name-only --ignore-all-space | grep -E 'lean-toolchain|lake-manifest.json')
-        echo "Changed files: $FILENAMES"
         OUTCOME=$(bash check-changes.sh)
         echo "$OUTCOME" >> "$GITHUB_OUTPUT"
         echo "$OUTCOME"
