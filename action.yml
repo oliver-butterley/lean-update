@@ -69,18 +69,13 @@ runs:
 
     - name: Check if lean-toolchain or lake-manifest.json were updated
       id: check-update
-      # Use git diff option -w to ignore changes in white space
       run: |
+        git diff --name-only --ignore-all-space | grep -E 'lean-toolchain|lake-manifest.json'
         FILENAMES=$(git diff --name-only --ignore-all-space | grep -E 'lean-toolchain|lake-manifest.json')
         echo "Changed files: $FILENAMES"
-        echo "changed_files=$FILENAMES" >> "$GITHUB_OUTPUT"
-        if [[ -n $(git diff -w "lean-toolchain") ]] || [[ -n $(git diff -w "lake-manifest.json") ]]; then
-          echo "Updates available."
-          echo "files_changed=true" >> "$GITHUB_OUTPUT";
-        else
-          echo "No changes found."
-          echo "files_changed=false" >> "$GITHUB_OUTPUT";
-        fi
+        OUTCOME=$(bash check-changes.sh)
+        echo "$OUTCOME" >> "$GITHUB_OUTPUT"
+        echo "$OUTCOME"
       shell: bash
 
     - name: Try to build lean if something was updated
