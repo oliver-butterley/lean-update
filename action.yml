@@ -6,16 +6,16 @@ inputs:
     description: |
       What to do when an update is available and the build is successful.
       Allowed values: "silent", "commit", "issue" or "pr".
-      Default: "commit".
+      Default: "silent".
     required: true
-    default: "commit"
+    default: "silent"
   on_update_fails:
     description: |
       What to do when an update is available and the build fails.
       Allowed values: "silent", "issue" or "pr".
-      Default: "issue".
+      Default: "silent".
     required: true
-    default: "issue"
+    default: "silent"
   token: 
     description: |
       A Github token to be used for committing
@@ -28,8 +28,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Check that project has Mathlib as a dependency
       # As per https://github.com/leanprover/lean-action
@@ -37,10 +35,10 @@ runs:
       run: |
         TOML_PATTERN="\[\[require\]\]\nname = \"mathlib\"\ngit = \"https://github.com/leanprover-community/mathlib4"
         if grep -q "require mathlib" lakefile.lean || grep -Pzq "$TOML_PATTERN" lakefile.toml; then
-          echo "USES_MATHLIB=true" >> "$GITHUB_OUTPUT"
+          echo "uses_mathlib=true" >> "$GITHUB_OUTPUT"
           echo "Project confirmed to have mathlib as a dependency.";
         else  
-          echo "USES_MATHLIB=false" >> "$GITHUB_OUTPUT"
+          echo "uses_mathlib=false" >> "$GITHUB_OUTPUT"
           echo "Project does not have mathlib as a dependency.";
         fi
       shell: bash
@@ -72,7 +70,7 @@ runs:
       run: |
         OUTCOME=$(bash ${{ github.action_path }}/check-changes.sh)
         echo "$OUTCOME" >> "$GITHUB_OUTPUT"
-        echo "$OUTCOME"
+        echo "info: $OUTCOME"
       shell: bash
 
     - name: Try to build lean if something was updated
