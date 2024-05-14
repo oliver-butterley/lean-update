@@ -28,7 +28,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Update Lean project
-        uses:  oliver-butterley/lean-update-action@v1-alpha
+        uses:  oliver-butterley/lean-update-action@v1-alpha.3
         with:
           #  Allowed values: "silent", "commit", "issue" or "pr". Default: "silent".
           on_update_succeeds: commit
@@ -67,23 +67,22 @@ jobs:
       - name: Check for update
         id: check
         # Action is silent except for setting the outcome to be used in subsequent steps
-        uses:  oliver-butterley/lean-update-action@v1-alpha
+        uses:  oliver-butterley/lean-update-action@v1-alpha.3
 
-      - name: When update succeeds
+      - name: When update succeeds do something
         if: steps.check.outputs.outcome == 'update-succeeds'
         run: echo An update is available and builds successfully
 
-      - name: When update fails
+      - name: When update fails do something
         if: steps.check.outputs.outcome == 'update-fails'
         run: echo An update is available but builds fails
 ```
 
 ### To do
 
-- Add configuration options for `lake update` so that a particular project can choose to only update some of the dependencies if required.
-- Add update details to commit / issue / PR. Diff of changed files?
+- Produce detailed feedback on what is happening in a way that can be passed to subsequent steps.
 - Add configuration options for the case when documentation also needs to be built.
-- Use other lean action to confirm that the build is successful.
+- Use `lean-action` to confirm that the build is successful.
 - Add functionality to not open another issue if the previous one is already open.
 
 ## Total customization
