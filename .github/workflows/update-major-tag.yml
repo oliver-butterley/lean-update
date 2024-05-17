@@ -20,6 +20,8 @@ on:
 jobs:
   tag:
     runs-on: ubuntu-latest
+    permissions:
+        contents: write       # required to commit to the repo
     steps:
     - uses: actions/checkout@v4
       with:
