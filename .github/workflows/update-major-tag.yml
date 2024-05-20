@@ -24,22 +24,17 @@ jobs:
     permissions:
         contents: write       # required to commit to the repo
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: get bot info
-      id: bot-details
-      uses: raven-actions/bot-details@v1
-      
+    - name: Get bot info
+      uses: raven-actions/bot-details@v1 
     - name: Git config
       run: |
-        git config user.name "$USER_NAME"
-        git config user.email "$USER_EMAIL" 
-      env:
-        USER_NAME: ${{ steps.bot-details.outputs.name }}
-        USER_EMAIL: ${{ steps.bot-details.outputs.email }}
+        git config user.name "$BOT_NAME"
+        git config user.email "$BOT_EMAIL" 
     - name: Tag new target
       run: git tag -f ${{ github.event.inputs.major_version }} ${{ github.event.inputs.target }}
     - name: Push new tag
       run: git push origin ${{ github.event.inputs.major_version }} --force
-      
