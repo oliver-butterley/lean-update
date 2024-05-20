@@ -15,4 +15,3 @@ jobs:
       uses: raven-actions/actionlint@v1
       with:
         pyflakes: false
-        files: ".github/workflows/*.yml, action.yml"
