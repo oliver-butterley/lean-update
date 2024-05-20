@@ -3,11 +3,7 @@ on:
   push:
     branches:
       - 'main'
-    paths:
-      - '.github/**'
   pull_request:
-    paths:
-      - '.github/**'
 
 jobs:
   actionlint:
@@ -18,4 +14,5 @@ jobs:
     - name: actionlint
       uses: raven-actions/actionlint@v1
       with:
-        pyflakes: false # we do not use python scripts
+        pyflakes: false
+        files: ".github/workflows/*.yml, action.yml"
