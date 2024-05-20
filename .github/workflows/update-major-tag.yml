@@ -27,13 +27,19 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: get bot info
+      id: bot-details
+      uses: raven-actions/bot-details@v1
+      
     - name: Git config
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com" 
+        git config user.name "$USER_NAME"
+        git config user.email "$USER_EMAIL" 
+      env:
+        USER_NAME: ${{ steps.bot-details.outputs.name }}
+        USER_EMAIL: ${{ steps.bot-details.outputs.email }}
     - name: Tag new target
       run: git tag -f ${{ github.event.inputs.major_version }} ${{ github.event.inputs.target }}
     - name: Push new tag
       run: git push origin ${{ github.event.inputs.major_version }} --force
-
-    # bot user details: https://api.github.com/users/github-actions%5Bbot%5D
+      
