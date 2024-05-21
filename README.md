@@ -21,7 +21,7 @@ See below for [detailed configuration suggestions](#typical-applications) for ty
 
 ## :gear: Description of functionality
 
-The action starts by checking if the project has mathlib as a dependency and aborts if this isn't the case. It then updates `lean-toolchain` to match the latest version of mathlib. It then attempts `lake update`. Assuming this is successful then the action attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible outcomes:
+The action starts by checking if the project has mathlib as a dependency and aborts if this isn't the case. It then updates `lean-toolchain` to match the latest version of mathlib. It then attempts `lake update`. Assuming this is successful then the action attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible results:
 
 - No update available
 - Update available and build successful
@@ -57,9 +57,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Update Lean project
+        id: try-update
         uses: oliver-butterley/lean-update@v1-alpha
       - name: When update succeeds commit updated version
-        if: steps.update.outputs.outcome == 'update-succeeds'
+        if: steps.try-update.outputs.result == 'update-succeeds'
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
@@ -128,7 +129,7 @@ For the action to open an issue, the issue feature must be activated for the rep
 
 ## 📤 Outputs
 
-The action sets `outcome` with the value of `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios. Consequently this action can be used to check for available updates and then trigger different tasks. The checked out repository will remain in the state it is after the attempted update. Consequently is ready to commit if the update is successful.
+The action sets `result` with the value of `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios. Consequently this action can be used to check for available updates and then trigger different tasks. The checked out repository will remain in the state it is after the attempted update. Consequently is ready to commit if the update is successful.
 
 ```yml
 jobs:
@@ -138,15 +139,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Update lean
-        id: update
+        id: try-update
         uses: oliver-butterley/lean-update-action@v1-alpha
 
       - name: When update succeeds do something
-        if: steps.update.outputs.outcome == 'update-succeeds'
+        if: steps.try-update.outputs.result == 'update-succeeds'
         run: echo "Here do something when an update is available and builds successfully"
 
       - name: When update fails do something
-        if: steps.update.outputs.outcome == 'update-fails'
+        if: steps.try-update.outputs.result == 'update-fails'
         run: echo "Here do something when an update is available but build fails"
 ```
 
