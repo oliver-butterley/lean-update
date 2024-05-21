@@ -60,7 +60,7 @@ jobs:
         id: try-update
         uses: oliver-butterley/lean-update@v1-alpha
       - name: When update succeeds commit updated version
-        if: steps.try-update.outputs.result == 'update-succeeds'
+        if: steps.try-update.outputs.result == 'update-success'
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
@@ -129,7 +129,7 @@ For the action to open an issue, the issue feature must be activated for the rep
 
 ## 📤 Outputs
 
-The action sets `result` with the value of `up-to-date`, `update-succeeds` or `update-fails` depending on the three possible scenarios. Consequently this action can be used to check for available updates and then trigger different tasks. The checked out repository will remain in the state it is after the attempted update. Consequently is ready to commit if the update is successful.
+The action sets `result` with the value of `up-to-date`, `update-success` or `update-fail` depending on the three possible scenarios. Consequently this action can be used to check for available updates and then trigger different tasks. The checked out repository will remain in the state it is after the attempted update. Consequently is ready to commit if the update is successful.
 
 ```yml
 jobs:
@@ -143,11 +143,11 @@ jobs:
         uses: oliver-butterley/lean-update-action@v1-alpha
 
       - name: When update succeeds do something
-        if: steps.try-update.outputs.result == 'update-succeeds'
+        if: steps.try-update.outputs.result == 'update-success'
         run: echo "Here do something when an update is available and builds successfully"
 
       - name: When update fails do something
-        if: steps.try-update.outputs.result == 'update-fails'
+        if: steps.try-update.outputs.result == 'update-fail'
         run: echo "Here do something when an update is available but build fails"
 ```
 
