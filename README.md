@@ -6,7 +6,7 @@ This [GitHub Action](https://github.com/features/actions) is for Lean projects w
 
 ⚠️  **This action is currently in alpha version and functionality could change significantly prior to version 1 release.**
 
-Any input concerning desired functionality or potential problems is very welcome. Please open an [issue](https://github.com/oliver-butterley/lean-update/issues) or add to ongoing conversations.
+Any input concerning desired functionality or potential problems is very welcome. Please open an [issue](https://github.com/oliver-butterley/lean-update/issues) or add to ongoing conversations. This action should be considered a sketch of an idea with potential to become something solid if the required functionality becomes clear. 
 
 The action [attempts to update](#description-of-functionality) Lean and Mathlib. If an update is available then the updated version is tested. This allows for automatic committing of the updated project, opening PRs or opening issues.
 
