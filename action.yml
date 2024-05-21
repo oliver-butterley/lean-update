@@ -55,8 +55,8 @@ runs:
         echo "$HOME/.elan/bin" >> $GITHUB_PATH
       shell: bash
 
-    - name: Update Mathlib dependency of ${{ github.repository }}
-      run: lake update Mathlib
+    - name: Update dependencies of ${{ github.repository }}
+      run: lake update
       shell: bash
 
     - name: Check if lean-toolchain or lake-manifest.json were updated
