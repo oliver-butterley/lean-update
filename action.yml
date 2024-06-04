@@ -16,7 +16,7 @@ inputs:
       Default: "silent".
     required: true
     default: "silent"
-  token: 
+  token:
     description: |
       A Github token to be used for committing
     required: true
@@ -28,22 +28,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-
-    - name: Check that project has Mathlib as a dependency
-      id: check-mathlib
-      run: |
-        OUTCOME=$(bash ${{ github.action_path }}/check-mathlib.sh)
-        echo "$OUTCOME" >> "$GITHUB_OUTPUT"
-        echo "info: $OUTCOME"
-      shell: bash
-
-    - name: Give up if not using mathlib
-      if: steps.check-mathlib.outputs.uses_mathlib == 'false'
-      run: |
-        echo "This action requires the lean project to have mathlib as a dependency." 
-        exit 1
-      shell: bash
-
     - name: Update lean-toolchain
       run: |
         curl -L https://raw.githubusercontent.com/leanprover-community/mathlib4/master/lean-toolchain -o lean-toolchain
@@ -71,10 +55,9 @@ runs:
       if: steps.check-update.outputs.files_changed == 'true'
       id: build-lean
       continue-on-error: true
-      run: |
-        lake exe cache get || true
-        lake build
-      shell: bash
+      uses: leanprover/lean-action@v1-beta
+      with:
+        test: false
 
     - name: Record outcome
       id: record-outcome
@@ -120,7 +103,7 @@ runs:
     - name: Commit update if the updated lean build was successful
       if: steps.build-lean.outcome == 'success' && inputs.on_update_succeeds == 'commit'
       uses: EndBug/add-and-commit@v9.1.4
-      with: 
+      with:
         default_author: github_actions
 
     - name: Open issue if the updated lean build fails
