@@ -55,7 +55,7 @@ runs:
       if: steps.check-update.outputs.files_changed == 'true'
       id: build-lean
       continue-on-error: true
-      uses: Seasawher/lean-action@patch-1
+      uses: leanprover/lean-action@v1-beta
       with:
         test: false
 
