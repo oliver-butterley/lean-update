@@ -30,7 +30,11 @@ runs:
   steps:
     - name: Update lean-toolchain
       run: |
-        curl -L https://raw.githubusercontent.com/leanprover-community/mathlib4/master/lean-toolchain -o lean-toolchain
+        LATEST_LEAN=$(gh release list --repo leanprover/lean4 --limit 1 | awk '{print $1}')
+        echo "The latest release/prerelase is: $LATEST_LEAN"
+        echo "leanprover/lean4:$LATEST_LEAN" > lean-toolchain
+      env:
+        GH_TOKEN: ${{ github.token }}
       shell: bash
 
     - name: Install elan
