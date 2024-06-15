@@ -2,13 +2,13 @@
 
 <!-- [![GitHub - marketplace](https://img.shields.io/badge/marketplace-lean-update-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/lean-update) -->
 
-This [GitHub Action](https://github.com/features/actions) is for Lean projects which include Mathlib as a dependency. Since both Lean and Mathlib are in rapid development, it is important to keep up to date with the latest version. This action aims to make this process smoother.
+This [GitHub Action](https://github.com/features/actions) is for Lean projects. Since both Lean and Mathlib are in rapid development, it is important to keep up to date with the latest version. This action aims to make this process smoother.
 
 ⚠️  **This action is currently in alpha version and functionality could change significantly prior to version 1 release.**
 
-Any input concerning desired functionality or potential problems is very welcome. Please open an [issue](https://github.com/oliver-butterley/lean-update/issues) or add to ongoing conversations. This action should be considered a sketch of an idea with potential to become something solid if the required functionality becomes clear. 
+Any input concerning desired functionality or potential problems is very welcome. Please open an [issue](https://github.com/oliver-butterley/lean-update/issues) or add to ongoing conversations. This action should be considered a sketch of an idea with potential to become something solid if the required functionality becomes clear.
 
-The action [attempts to update](#description-of-functionality) Lean and Mathlib. If an update is available then the updated version is tested. This allows for automatic committing of the updated project, opening PRs or opening issues.
+The action [attempts to update](#description-of-functionality) Lean and the libraries. If an update is available then the updated version is tested. This allows for automatic committing of the updated project, opening PRs or opening issues.
 
 Quick setup: add the following to the repo's Github workflow steps.
 
@@ -21,7 +21,7 @@ See below for [detailed configuration suggestions](#typical-applications) for ty
 
 ## :gear: Description of functionality
 
-The action starts by checking if the project has mathlib as a dependency and aborts if this isn't the case. It then updates `lean-toolchain` to match the latest version of mathlib. It then attempts `lake update`. Assuming this is successful then the action attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible results:
+This action first gets the latest prerelease or release from the [Lean repository](https://github.com/leanprover/lean4) and updates `lean-toolchain`. It then attempts `lake update`. Assuming this is successful then the action attempts to build the project with the updated version. This might be successful or not. Consequently, there are three possible results:
 
 - No update available
 - Update available and build successful
