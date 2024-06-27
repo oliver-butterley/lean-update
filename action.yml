@@ -62,6 +62,8 @@ runs:
       uses: leanprover/lean-action@main
       with:
         test: false
+        # If the .lake directory remains, an error may occur when updating.
+        use-github-cache: false
 
     - name: Record outcome
       id: record-outcome
