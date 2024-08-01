@@ -85,6 +85,7 @@ runs:
         delete-branch: true
         branch-suffix: random
         branch: auto-update/patch
+        labels: "auto-update-lean"
 
     - name: Open issue if the updated lean build was successful
       if: steps.build-lean.outcome == 'success' && inputs.on_update_succeeds == 'issue'
