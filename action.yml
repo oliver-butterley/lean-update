@@ -29,13 +29,10 @@ runs:
   using: "composite"
   steps:
     - name: Update lean-toolchain
-      run: |
-        LATEST_LEAN=$(gh release list --repo leanprover/lean4 --limit 1 | awk '{print $1}')
-        echo "The latest release/prerelase is: $LATEST_LEAN"
-        echo "leanprover/lean4:$LATEST_LEAN" > lean-toolchain
+      run: ./scripts/getLatest.ps1
       env:
         GH_TOKEN: ${{ github.token }}
-      shell: bash
+      shell: pwsh
 
     - name: Install elan
       run: |
