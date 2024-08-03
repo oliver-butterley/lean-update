@@ -29,7 +29,7 @@ runs:
   using: "composite"
   steps:
     - name: Update lean-toolchain
-      run: ./scripts/getLatest.ps1
+      run: ${{ github.action_path }}/scripts/getLatest.ps1
       env:
         GH_TOKEN: ${{ github.token }}
       shell: pwsh
