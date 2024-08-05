@@ -59,7 +59,7 @@ runs:
       if: steps.check-update.outputs.files_changed == 'true'
       id: build-lean
       continue-on-error: true
-      uses: leanprover/lean-action@main
+      uses: leanprover/lean-action@v1
 
     - name: Record outcome
       id: record-outcome
