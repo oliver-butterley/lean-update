@@ -1,21 +1,18 @@
+# get all release tags from leanprover/lean4
 $versions = gh release list `
   --repo leanprover/lean4 `
   --json tagName | `
   ConvertFrom-Json | `
-  ForEach-Object { $_.tagName }
+  ForEach-Object { $_.tagName } | `
+  ForEach-Object { $_ -replace '^v' }
 
-$versions >> tmp.versionlist.txt
+# parse the version tags as semver
+$semvers = $versions | ForEach-Object { [System.Management.Automation.SemanticVersion]::new($_) }
 
-gh release download `
-  --repo Seasawher/Semver.lean latest `
-  --pattern 'semver.exe' `
-  --dir "." `
-  --skip-existing
+# sort the versions and get the latest one
+$latest = $semvers | Sort-Object | Select-Object -Last 1
+Write-Host "Latest Lean release is: $latest"
 
-./semver.exe tmp.versionlist.txt lean-toolchain
-
-$latestLean = Get-Content -Path "lean-toolchain"
-Write-Host "Latest Lean version: $latestLean"
-
-Remove-Item -Path tmp.versionlist.txt
-Remove-Item -Path .\semver.exe
+# update `lean-toolchain` file
+$leanStyleVersion = "leanprover/lean4:v$latest"
+$leanStyleVersion | Set-Content -Path lean-toolchain
