@@ -41,7 +41,7 @@ runs:
       shell: bash
 
     - name: Update dependencies of ${{ github.repository }}
-      run: lake update
+      run: lake -R -Kenv=dev update
       shell: bash
 
     - name: Check if lean-toolchain or lake-manifest.json were updated
