@@ -41,7 +41,7 @@ runs:
       shell: bash
 
     - name: Update dependencies of ${{ github.repository }}
-      run: lake update
+      run: lake -R -Kenv=dev update
       shell: bash
 
     - name: Check if lean-toolchain or lake-manifest.json were updated
@@ -77,7 +77,7 @@ runs:
       if: steps.build-lean.outcome == 'success' && inputs.on_update_succeeds == 'pr'
       uses: peter-evans/create-pull-request@v7
       with:
-        title: "Updates available and ready to merge."
+        title: "Updates available and ready to merge"
         body: "To do: add useful details here..."
         delete-branch: true
         branch-suffix: random
