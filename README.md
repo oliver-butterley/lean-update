@@ -2,9 +2,9 @@
 
 <!-- [![GitHub - marketplace](https://img.shields.io/badge/marketplace-lean-update-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/lean-update) -->
 
-This [GitHub Action](https://github.com/features/actions) is for Lean projects. Since both Lean and Mathlib are in rapid development, it is important to keep up to date with the latest version. This action aims to make this process smoother.
+⚠️  **This action is currently only sporadically maintained, the [fork maintained by Seasawher](https://github.com/Seasawher/lean-update) could well be the best options for most use cases.**
 
-⚠️  **This action is currently in alpha version and functionality could change significantly prior to version 1 release.**
+This [GitHub Action](https://github.com/features/actions) is for Lean projects. Since both Lean and Mathlib are in rapid development, it is important to keep up to date with the latest version. This action aims to make this process smoother.
 
 Any input concerning desired functionality or potential problems is very welcome. Please open an [issue](https://github.com/oliver-butterley/lean-update/issues) or add to ongoing conversations. This action should be considered a sketch of an idea with potential to become something solid if the required functionality becomes clear.
 
