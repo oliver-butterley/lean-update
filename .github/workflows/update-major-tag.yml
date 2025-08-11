@@ -25,7 +25,7 @@ jobs:
         contents: write       # required to commit to the repo
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
       # To do: rewrite the next 4 steps using actions/github-scripts
